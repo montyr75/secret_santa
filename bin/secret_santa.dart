@@ -30,7 +30,7 @@ void main() {
   int iterations = 0;
   
   // loop until there are no more invalid pairings
-  while (people.any((person) => !person.validSanta)) {
+  while (people.any((Person person) => !person.validSanta)) {
     // randomize the santas list
     santas.shuffle();
     
@@ -44,7 +44,7 @@ void main() {
   
   // print results
   print("Iterations required: $iterations\n");
-  people.forEach((person) => print("${person.secretSanta} gives to $person."));
+  people.forEach((Person person) => print("${person.secretSanta} gives to $person."));
 }
  
 class Person {
@@ -53,9 +53,16 @@ class Person {
   Person secretSanta;
  
   Person(this.firstName, this.lastName);
+  
+  Person.fromMap(Map<String, String> map) {
+   firstName =  map["firstName"];
+   lastName = map["lastName"];
+  }
  
   // Secret Santa rules enforced here
   bool get validSanta => secretSanta != null && !identical(secretSanta, this) && secretSanta.lastName != lastName;
  
+  Map<String, String> toMap() => {"firstName": firstName, "lastName": lastName};
+  
   @override String toString() => "$firstName $lastName";
 }
